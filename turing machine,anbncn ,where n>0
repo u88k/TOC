@@ -1,0 +1,82 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool TuringMachine(string input){
+	input = "_" + input + "_";
+	int head = 0;
+	string state = "q0";
+	
+	while(state!="y" && state!="n"){
+		char curr = input[head];
+		
+		if(state=="q0"){
+			head++;
+			curr = input[head];
+			if(curr=='a'){
+				input[head] = 'd';
+				state = "q1";
+			}else if(curr=='b' || curr=='c'){
+				state = "n";
+			}else if(curr=='_'){
+				state = "y";
+			}
+		}else if(state=="q1"){
+			head++;
+			curr = input[head];
+			if(curr=='c' || curr=='_'){
+				state = "n";
+			}else if(curr=='b'){
+				input[head] = 'd';
+				state = "q2";
+			}
+		}else if(state=="q2"){
+			head++;
+			curr = input[head];
+			if(curr=='a' || curr=='_'){
+				state = "n";
+			}else if(curr=='c'){
+				input[head] = 'd';
+				state = "q3";
+			}
+		}else if(state=="q3"){
+			while(input[head]!='_'){
+				head--;
+			}
+			state = "q0";
+		}
+	}
+	
+	return state=="y";
+}
+
+bool validate(string str){
+	int size = str.size();
+	for(int i = 0; i<size; i++){
+		if(str[i]!='a' && str[i]!='b' && str[i]!='c'){
+			cout<<"\nError : Input must contain only a's, b's and c's\n";
+			return false;
+		}
+	}
+	return true;
+}
+
+int main(){
+	cout<<"Turing Machine that accepts all strings over {a,b,c} of the form a^n.b^n.c^n where n>=0\n";
+	
+	string str;
+	do{
+		cout<<"\nEnter a string : ";
+		getline(cin,str);
+	}while(!validate(str));
+	
+	if(TuringMachine(str)){
+		if(str.size()==0){
+			str = "^";
+		}
+		cout<<str<<" is accepted";
+	}else{
+		cout<<str<<" is not accepted";
+	}
+	return 0;
+}
