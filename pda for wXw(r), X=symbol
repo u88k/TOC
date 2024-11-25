@@ -1,0 +1,63 @@
+#include<iostream>
+#include<string>
+#include<stack>
+using namespace std;
+
+bool PDA(string str){
+	int size = str.size();
+	if(size==0) return false;
+	
+	stack<char> st;
+	int i = 0;
+	
+	while(i<size && str[i]!='X'){
+		st.push(str[i]);
+		i++;
+	}
+	
+	i++;
+	
+	while(i<size){
+		if(st.empty() || st.top()!=str[i]) return false;
+		st.pop();
+		i++;
+	}
+	
+	return st.empty();
+}
+
+bool validate(string str){
+	int size = str.size();
+	int xcount = 0;
+	for(int i = 0; i<size; i++){
+		if(str[i]!='a' && str[i]!='b' && str[i]!='X'){
+			cout<<"\nError : string must contain only a's and b's\n";
+			return false;
+		}
+		if(str[i]=='X'){
+			if(xcount==0) xcount = 1;
+			else return false;
+		}
+	}
+	return true;
+}
+
+int main(){
+	cout<<"PDA that accepts language wXreverse(w) where w is any string over {a,b}";
+	
+	string str;
+	do{
+		cout<<"\nEnter a string : ";
+		getline(cin,str);
+	}while(!validate(str));
+	
+	if(PDA(str)){
+		cout<<str<<" is accepted";
+	}else{
+		if(str.size()==0){
+			str = '^';
+		}
+		cout<<str<<" is not accepted";
+	}
+	return 0;
+}
