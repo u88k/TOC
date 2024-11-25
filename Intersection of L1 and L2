@@ -1,0 +1,105 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+bool FA(string str){
+	int size = str.size();
+	int state = 0;
+	
+	for(int i = 0; i<size; i++){
+		char c = str[i];
+		if(state==0){
+			if(c=='a') state = 1;
+			else state == 9;
+		}else if(state==1){
+			if(c=='a') state=2;
+			else state = 6;
+		}else if(state==2){
+			if(c=='a') state = 3;
+			else state = 5;
+		}else if(state==3){
+			if(c=='a') state = 4;
+			else state = 5;
+		}else if(state==4){
+			if(c=='b') state = 5;
+		}else if(state==5){
+			if(c=='a') state = 3;
+		}else if(state==6){
+			if(c=='a') state = 7;
+		}else if(state==7){
+			if(c=='b') state = 8;
+		}else if(state==8){
+			if(c=='a') state = 7;
+			else state = 6;
+		}else if(state==9){
+			if(c=='a') state = 10;
+			else state = 13;
+		}else if(state==10){
+			if(c=='b') state = 11;
+		}else if(state==11){
+			if(c=='a') state = 12;
+		}else if(state==12){
+			if(c=='a') state = 10;
+			else state = 11;
+		}else if(state==13){
+			if(c=='b') state = 14;
+		}else if(state==14){
+			if(c=='a') state = 13;
+			else state = 15;
+		}else if(state==15){
+			if(c=='a') state = 13;
+		}
+	}
+	
+	
+	return state==8;
+}
+
+bool validate(string str){
+	int size = str.size();
+	for(int i = 0; i<size; i++){
+		if(str[i]!='a' && str[i]!='b'){
+			cout<<"\nError : string must contain only a's and b's\n";
+			return false;
+		}
+	}
+	return true;
+}
+
+int choice(){
+	int ch;
+	do{
+		cout<<"\n\n===================\n";
+		cout<<"1. Continue\n";
+		cout<<"0. Exit\n";
+		cout<<"===================\n";
+		cout<<"Enter your choice : ";
+		cin>>ch;
+		if(ch<0 || ch>1){
+			cout<<"\nError : Invalid choice\n";
+		}
+	}while(ch<0 || ch>1);
+	
+	return ch;
+}
+
+int main(){
+	string str;
+	do{
+		cout<<"\nEnter a string : ";
+		getline(cin,str);
+	}while(!validate(str));
+	
+	if(FA(str)){
+		cout<<str<<" is accepted";
+	}else{
+		if(str.length()==0){
+			str = '^';
+		}
+		cout<<str<<" is not accepted";
+	}
+	
+	return 0;
+	
+	return 0;
+}
