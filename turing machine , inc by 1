@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string TuringMachine(string tape) {
+    int state = 0;          
+    int head = tape.length(); 
+
+    
+    tape = "$" + tape + "$";
+
+    while (state==0) {
+        char current = tape[head];
+        
+    	if (current == '1') {
+            tape[head] = '0'; 
+            head--;           
+        } else if (current == '0') {
+            tape[head] = '1'; 
+            state = 1;        
+        } else if (current == '$') { 
+            tape[head] = '1';
+            state = 1;        
+        }
+    }
+    
+    if(tape[0]=='$'){
+    	return tape.substr(1,tape.size()-2);
+	}else{
+		return tape.substr(0,tape.size()-1);
+	}
+	
+	
+}
+
+bool validate(string str){
+	int size = str.size();
+	for(int i = 0; i<size; i++){
+		if(str[i]!='0' && str[i]!='1'){
+			cout<<"\nError : Invalid input,please enter only binary string \n";
+			return false;
+		}
+	}
+	return true;
+}
+
+int main() {
+    string input;
+    
+	do{
+		cout<<"\nEnter a binary number to increment: ";
+		getline(cin,input);
+	}while(!validate(input));
+
+    string result = TuringMachine(input);
+
+    cout <<input<<" + 1 : "<< result << endl;
+
+    return 0;
+}
